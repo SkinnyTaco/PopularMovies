@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">UdacityND_Project2_PopularMovies</string>
 
+    // API Keys
+    <string name="movie_db_api_key">66a6240c2524fc8a93de18a798d59512</string>
+
     <string name="poster_content_description">Movie poster</string>
 </resources>

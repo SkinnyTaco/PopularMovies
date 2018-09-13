@@ -4,6 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.BaseAdapter;
 import android.widget.GridLayout;
+import android.widget.GridView;
+
+import com.maurdan.flaco.udacitynd_project2_popularmovies.adapters.GridViewAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,7 +15,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        GridLayout gridLayout = findViewById(R.id.grid_layout);
+        GridView gridLayout = findViewById(R.id.grid_layout);
+        gridLayout.setAdapter(new GridViewAdapter(this));
 
     }
 }
