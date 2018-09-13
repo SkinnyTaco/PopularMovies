@@ -8,17 +8,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
-    public static final String BASE_URL = "https://api.themoviedb.org/3/";
+    private static final String BASE_URL = "https://api.themoviedb.org/3/";
 
     public static final String API_KEY = "66a6240c2524fc8a93de18a798d59512";
 
-    private static Gson gson = new GsonBuilder()
-            .setLenient()
-            .create();
-
     private static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(GsonConverterFactory.create())
             .build();
 
     public static <S> S createService(Class<S> serviceClass) {

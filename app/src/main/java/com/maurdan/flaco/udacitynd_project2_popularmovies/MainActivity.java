@@ -31,17 +31,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        MovieDBClient client = ServiceGenerator.createService(MovieDBClient.class);
-//        Call<Result> call = client.getPopularMovies(ServiceGenerator.API_KEY);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServiceGenerator.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        MovieDBClient client = retrofit.create(MovieDBClient.class);
-
+        MovieDBClient client = ServiceGenerator.createService(MovieDBClient.class);
         Call<Result> call = client.getPopularMovies(ServiceGenerator.API_KEY);
+
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(ServiceGenerator.BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        MovieDBClient client = retrofit.create(MovieDBClient.class);
+//
+//        Call<Result> call = client.getPopularMovies(ServiceGenerator.API_KEY);
 
         final GridView gridLayout = findViewById(R.id.grid_layout);
 

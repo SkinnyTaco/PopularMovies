@@ -1,6 +1,7 @@
 package com.maurdan.flaco.udacitynd_project2_popularmovies.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.maurdan.flaco.udacitynd_project2_popularmovies.DetailsActivity;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.MainActivity;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
@@ -18,6 +21,7 @@ import java.util.List;
 
 public class GridViewAdapter extends BaseAdapter {
 
+    public static final String EXTRA_MOVIE_ID = "com.maurdan.flaco.intent_extra.movie_id";
     private Context mContext;
     private List<Movie> mMovieList;
 
@@ -58,9 +62,20 @@ public class GridViewAdapter extends BaseAdapter {
 
         Picasso.get()
                 .load(poster)
-                .resize(200,200)
+                .fit()
+                .centerInside()
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(imageView);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, DetailsActivity.class);
+                Integer movieId = movie.getId();
+                intent.putExtra(EXTRA_MOVIE_ID, movieId);
+                mContext.startActivity(intent);
+            }
+        });
 
         return convertView;
     }
