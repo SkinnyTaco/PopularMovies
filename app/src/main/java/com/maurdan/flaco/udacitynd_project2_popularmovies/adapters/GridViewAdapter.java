@@ -1,13 +1,18 @@
 package com.maurdan.flaco.udacitynd_project2_popularmovies.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -16,15 +21,14 @@ public class GridViewAdapter extends BaseAdapter {
     private Context mContext;
     private List<Movie> mMovieList;
 
-    public GridViewAdapter(Context context) {
+    public GridViewAdapter(Context context, List<Movie> movies) {
         mContext = context;
-//        mMovieList = movieList;
+        mMovieList = movies;
     }
 
     @Override
     public int getCount() {
-//        return mMovieList.size();
-        return 10;
+        return mMovieList.size();
     }
 
     @Override
@@ -39,15 +43,25 @@ public class GridViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView;
+
+        final Movie movie = mMovieList.get(position);
+        Log.i("MOVIE TIME TIME", movie.getTitle() + "");
         if (convertView == null) {
-            textView = new TextView(mContext);
-            textView.setGravity(Gravity.CENTER);
-        } else {
-            textView = (TextView) convertView;
+            convertView = LayoutInflater.from(mContext)
+                    .inflate(R.layout.view_movie_grid, parent, false);
         }
 
-        textView.setText("I'm text, weee");
-        return textView;
+        String poster = Movie.BASE_URL + Movie.DEFAULT_WIDTH + movie.getPoster();
+        Log.i("OOOOOOOOOO", poster);
+
+        ImageView imageView = convertView.findViewById(R.id.iv_movie_poster);
+
+        Picasso.get()
+                .load(poster)
+                .resize(200,200)
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(imageView);
+
+        return convertView;
     }
 }
