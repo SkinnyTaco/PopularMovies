@@ -8,6 +8,7 @@ public class Movie {
     public static final String BASE_URL = "http://image.tmdb.org/t/p/";
 
     public static final String DEFAULT_WIDTH = "w185/";
+    public static final String BANNER_WIDTH = "w400/";
 
     //  id, title, release date, movie poster, vote average, and plot synopsis
 
@@ -35,13 +36,27 @@ public class Movie {
     @Expose
     private String synopsis;
 
+    @SerializedName("backdrop_path")
+    @Expose
+    private String banner;
+
     public Movie(Integer id, String title, String releaseDate, String poster, String voteAverage, String synopsis) {
         this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;
         this.poster = poster;
+
         this.voteAverage = voteAverage;
         this.synopsis = synopsis;
+        this.banner = banner;
+    }
+
+    public String getBanner() {
+        return banner;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
     }
 
     public Integer getId() {
