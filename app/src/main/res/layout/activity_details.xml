@@ -10,8 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!--title, release date, movie poster, vote average, and plot synopsis-->
-
         <ImageView
             android:id="@+id/iv_movie_banner"
             android:layout_width="wrap_content"

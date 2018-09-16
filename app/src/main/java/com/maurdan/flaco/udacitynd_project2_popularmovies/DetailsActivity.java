@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.maurdan.flaco.udacitynd_project2_popularmovies.adapters.GridViewAdapter;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
@@ -22,6 +23,8 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        setTitle(R.string.name_movie_details);
 
         MovieDBClient client = ServiceGenerator.createService(MovieDBClient.class);
         int movieId = getIntent().getIntExtra(GridViewAdapter.EXTRA_MOVIE_ID, 0);
@@ -75,7 +78,8 @@ public class DetailsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Movie> call, Throwable t) {
-
+                Toast.makeText(DetailsActivity.this, R.string.request_failed, Toast.LENGTH_SHORT)
+                    .show();
             }
         });
 

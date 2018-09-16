@@ -1,8 +1,9 @@
 package com.maurdan.flaco.udacitynd_project2_popularmovies;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -12,55 +13,74 @@ import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Result;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.utils.MovieDBClient;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.utils.ServiceGenerator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
     private List<Movie> data;
+    private MovieDBClient client;
+    private GridView gridLayout;
+    private GridViewAdapter mGridViewAdapter;
+    private Call<Result> call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MovieDBClient client = ServiceGenerator.createService(MovieDBClient.class);
-        Call<Result> call = client.getPopularMovies(ServiceGenerator.API_KEY);
+        gridLayout = findViewById(R.id.grid_layout);
 
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(ServiceGenerator.BASE_URL)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//
-//        MovieDBClient client = retrofit.create(MovieDBClient.class);
-//
-//        Call<Result> call = client.getPopularMovies(ServiceGenerator.API_KEY);
+        client = ServiceGenerator.createService(MovieDBClient.class);
+        call = client.getPopularMovies(ServiceGenerator.API_KEY);
+        makeCall(call);
 
-        final GridView gridLayout = findViewById(R.id.grid_layout);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.menu_most_popular:
+                setTitle(R.string.app_name);
+                call = client.getPopularMovies(ServiceGenerator.API_KEY);
+                makeCall(call);
+                return true;
+            case R.id.menu_top_rated:
+                setTitle(R.string.name_top_rated);
+                call = client.getTopRatedMovies(ServiceGenerator.API_KEY);
+                makeCall(call);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    private void makeCall(Call<Result> call) {
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
                 Result result = response.body();
                 data = result.getResults();
-                gridLayout.setAdapter(new GridViewAdapter(MainActivity.this, data));
-                Toast.makeText(MainActivity.this, "SUCCESS", Toast.LENGTH_LONG).show();
-                Log.i("OOOOOOOOO", data.toString());
+                mGridViewAdapter = new GridViewAdapter(MainActivity.this, data);
+                gridLayout.setAdapter(mGridViewAdapter);
             }
 
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Request failed", Toast.LENGTH_SHORT).show();
-                Log.i("FAILED REQUEST", t + "");
+                Toast.makeText(MainActivity.this, R.string.request_failed, Toast.LENGTH_SHORT)
+                        .show();
             }
         });
-
     }
 }
