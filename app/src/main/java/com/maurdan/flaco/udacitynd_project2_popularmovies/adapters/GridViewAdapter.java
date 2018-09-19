@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.maurdan.flaco.udacitynd_project2_popularmovies.DetailsActivity;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.activities.DetailsActivity;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;

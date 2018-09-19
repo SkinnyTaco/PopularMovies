@@ -1,4 +1,4 @@
-package com.maurdan.flaco.udacitynd_project2_popularmovies;
+package com.maurdan.flaco.udacitynd_project2_popularmovies.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.adapters.GridViewAdapter;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Result;
