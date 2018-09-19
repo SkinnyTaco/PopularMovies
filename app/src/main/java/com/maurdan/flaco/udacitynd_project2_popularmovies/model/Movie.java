@@ -1,9 +1,12 @@
 package com.maurdan.flaco.udacitynd_project2_popularmovies.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Movie {
+public class Movie implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -44,6 +47,32 @@ public class Movie {
         this.synopsis = synopsis;
         this.banner = banner;
     }
+
+    protected Movie(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        title = in.readString();
+        releaseDate = in.readString();
+        poster = in.readString();
+        voteAverage = in.readString();
+        synopsis = in.readString();
+        banner = in.readString();
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     public String getBanner() {
         return banner;
@@ -99,5 +128,26 @@ public class Movie {
 
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(id);
+        }
+        dest.writeString(title);
+        dest.writeString(releaseDate);
+        dest.writeString(poster);
+        dest.writeString(voteAverage);
+        dest.writeString(synopsis);
+        dest.writeString(banner);
     }
 }

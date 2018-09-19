@@ -18,7 +18,6 @@ import java.util.List;
 
 public class GridViewAdapter extends BaseAdapter {
 
-    public static final String EXTRA_MOVIE_ID = "com.maurdan.flaco.intent_extra.movie_id";
     private Context mContext;
     private List<Movie> mMovieList;
 
@@ -66,8 +65,7 @@ public class GridViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, DetailsActivity.class);
-                Integer movieId = movie.getId();
-                intent.putExtra(EXTRA_MOVIE_ID, movieId);
+                intent.putExtra(Constants.BOOK, movie);
                 mContext.startActivity(intent);
             }
         });
