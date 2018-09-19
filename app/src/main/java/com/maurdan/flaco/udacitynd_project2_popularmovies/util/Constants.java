@@ -6,5 +6,9 @@ public class Constants {
 
     public static final String API_KEY = BuildConfig.ApiKey;
 
-    static final String BASE_URL = "https://api.themoviedb.org/3/";
+    public static final String BASE_API_URL = "https://api.themoviedb.org/3/";
+    public static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/";
+
+    public static final String DEFAULT_POSTER_WIDTH = "w185/";
+    public static final String BANNER_WIDTH = "w400/";
 }

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.activities.DetailsActivity;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.util.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class GridViewAdapter extends BaseAdapter {
                     .inflate(R.layout.view_movie_grid, parent, false);
         }
 
-        String poster = Movie.BASE_URL + Movie.DEFAULT_WIDTH + movie.getPoster();
+        String poster = Constants.BASE_IMAGE_URL + Constants.DEFAULT_POSTER_WIDTH + movie.getPoster();
 
         ImageView imageView = convertView.findViewById(R.id.iv_movie_poster);
 

@@ -5,13 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Movie {
 
-    public static final String BASE_URL = "http://image.tmdb.org/t/p/";
-
-    public static final String DEFAULT_WIDTH = "w185/";
-    public static final String BANNER_WIDTH = "w400/";
-
-    //  id, title, release date, movie poster, vote average, and plot synopsis
-
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -40,7 +33,8 @@ public class Movie {
     @Expose
     private String banner;
 
-    public Movie(Integer id, String title, String releaseDate, String poster, String voteAverage, String synopsis) {
+    public Movie(Integer id, String title, String releaseDate, String poster, String voteAverage,
+                 String synopsis, String banner) {
         this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;

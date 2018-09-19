@@ -38,7 +38,7 @@ public class DetailsActivity extends AppCompatActivity {
                 Movie movie = response.body();
 
                 ImageView ivBanner = findViewById(R.id.iv_movie_banner);
-                String bannerUrl = Movie.BASE_URL + Movie.BANNER_WIDTH + movie.getBanner();
+                String bannerUrl = Constants.BASE_IMAGE_URL + Constants.BANNER_WIDTH + movie.getBanner();
 
                 int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
                 int desiredHeightBanner = (int) Math.round(screenWidth * 0.563);
@@ -57,7 +57,7 @@ public class DetailsActivity extends AppCompatActivity {
                 tvReleaseDate.setText(movie.getReleaseDate());
 
                 ImageView ivPoster = findViewById(R.id.iv_mini_poster);
-                String posterUrl = Movie.BASE_URL + Movie.DEFAULT_WIDTH + movie.getPoster();
+                String posterUrl = Constants.BASE_IMAGE_URL + Constants.DEFAULT_POSTER_WIDTH + movie.getPoster();
 
                 int posterWidth = (int) Math.round(screenWidth * 0.33);
                 int posterHeight = (int) Math.round(posterWidth * 1.5);
