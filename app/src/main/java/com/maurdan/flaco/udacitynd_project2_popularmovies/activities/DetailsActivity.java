@@ -10,8 +10,9 @@ import android.widget.Toast;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.adapters.GridViewAdapter;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
-import com.maurdan.flaco.udacitynd_project2_popularmovies.utils.MovieDBClient;
-import com.maurdan.flaco.udacitynd_project2_popularmovies.utils.ServiceGenerator;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.util.Constants;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.util.MovieDBClient;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.util.ServiceGenerator;
 import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
@@ -29,7 +30,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         MovieDBClient client = ServiceGenerator.createService(MovieDBClient.class);
         int movieId = getIntent().getIntExtra(GridViewAdapter.EXTRA_MOVIE_ID, 0);
-        Call<Movie> call = client.getMovieDetails(movieId, ServiceGenerator.API_KEY);
+        Call<Movie> call = client.getMovieDetails(movieId, Constants.API_KEY);
 
         call.enqueue(new Callback<Movie>() {
             @Override

@@ -4,6 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.maurdan.flaco.udacitynd_project2_popularmovies"
+        buildConfigField 'String', 'ApiKey', PopularMovies_ApiKey
         minSdkVersion 18
         targetSdkVersion 27
         versionCode 1
@@ -14,7 +15,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'ApiKey', PopularMovies_ApiKey
+            buildConfigField 'String', "ApiKey", PopularMovies_ApiKey
         }
     }
 }

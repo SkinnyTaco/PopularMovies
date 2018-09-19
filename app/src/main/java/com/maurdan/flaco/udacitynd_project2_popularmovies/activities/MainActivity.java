@@ -11,8 +11,9 @@ import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.adapters.GridViewAdapter;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Result;
-import com.maurdan.flaco.udacitynd_project2_popularmovies.utils.MovieDBClient;
-import com.maurdan.flaco.udacitynd_project2_popularmovies.utils.ServiceGenerator;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.util.Constants;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.util.MovieDBClient;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.util.ServiceGenerator;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         gridLayout = findViewById(R.id.grid_layout);
 
         client = ServiceGenerator.createService(MovieDBClient.class);
-        call = client.getPopularMovies(ServiceGenerator.API_KEY);
+        call = client.getPopularMovies(Constants.API_KEY);
         makeCall(call);
 
     }
@@ -53,12 +54,12 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.menu_most_popular:
                 setTitle(R.string.app_name);
-                call = client.getPopularMovies(ServiceGenerator.API_KEY);
+                call = client.getPopularMovies(Constants.API_KEY);
                 makeCall(call);
                 return true;
             case R.id.menu_top_rated:
                 setTitle(R.string.name_top_rated);
-                call = client.getTopRatedMovies(ServiceGenerator.API_KEY);
+                call = client.getTopRatedMovies(Constants.API_KEY);
                 makeCall(call);
                 return true;
             default:

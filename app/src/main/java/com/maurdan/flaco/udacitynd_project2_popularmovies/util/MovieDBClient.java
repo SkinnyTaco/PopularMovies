@@ -1,9 +1,7 @@
-package com.maurdan.flaco.udacitynd_project2_popularmovies.utils;
+package com.maurdan.flaco.udacitynd_project2_popularmovies.util;
 
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Result;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
