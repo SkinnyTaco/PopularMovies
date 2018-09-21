@@ -16,7 +16,4 @@ public interface MovieDBClient {
     @GET("movie/top_rated")
     Call<Result> getTopRatedMovies(@Query("api_key") String apiKey);
 
-    @GET("movie/{movie_id}")
-    Call<Movie> getMovieDetails(@Path("movie_id") Integer id, @Query("api_key") String apiKey);
-
 }
