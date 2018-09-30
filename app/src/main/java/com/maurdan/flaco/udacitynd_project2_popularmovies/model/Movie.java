@@ -1,41 +1,66 @@
 package com.maurdan.flaco.udacitynd_project2_popularmovies.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity
 public class Movie implements Parcelable {
 
     @SerializedName("id")
     @Expose
+    @PrimaryKey(autoGenerate = true)
     private Integer id;
 
     @SerializedName("title")
+    @ColumnInfo(name = "title")
     @Expose
     private String title;
 
     @SerializedName("release_date")
+    @ColumnInfo(name = "release_date")
     @Expose
     private String releaseDate;
 
     @SerializedName("poster_path")
+    @ColumnInfo(name = "poster_path")
     @Expose
     private String poster;
 
     @SerializedName("vote_average")
+    @ColumnInfo(name = "vote_average")
     @Expose
     private String voteAverage;
 
     @SerializedName("overview")
+    @ColumnInfo(name = "overview")
     @Expose
     private String synopsis;
 
     @SerializedName("backdrop_path")
+    @ColumnInfo(name = "backdrop_path")
     @Expose
     private String banner;
 
+    public Movie(String title, String releaseDate, String poster, String voteAverage,
+                 String synopsis, String banner) {
+        this.id = id;
+        this.title = title;
+        this.releaseDate = releaseDate;
+        this.poster = poster;
+
+        this.voteAverage = voteAverage;
+        this.synopsis = synopsis;
+        this.banner = banner;
+    }
+
+    @Ignore
     public Movie(Integer id, String title, String releaseDate, String poster, String voteAverage,
                  String synopsis, String banner) {
         this.id = id;
