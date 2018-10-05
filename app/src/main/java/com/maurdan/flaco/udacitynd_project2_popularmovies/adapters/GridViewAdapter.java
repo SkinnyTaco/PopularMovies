@@ -50,6 +50,12 @@ public class GridViewAdapter extends BaseAdapter {
                     .inflate(R.layout.view_movie_grid, parent, false);
         }
 
+        setupUi(convertView, movie);
+
+        return convertView;
+    }
+
+    private void setupUi(View convertView, final Movie movie) {
         String poster = Constants.BASE_IMAGE_URL + Constants.DEFAULT_POSTER_WIDTH + movie.getPoster();
 
         ImageView imageView = convertView.findViewById(R.id.iv_movie_poster);
@@ -69,7 +75,6 @@ public class GridViewAdapter extends BaseAdapter {
                 mContext.startActivity(intent);
             }
         });
-
-        return convertView;
     }
+
 }

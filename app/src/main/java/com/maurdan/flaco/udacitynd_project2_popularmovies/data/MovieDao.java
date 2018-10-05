@@ -23,10 +23,19 @@ public interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long addMovie(Movie movie);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long addMovies(Movie... movies);
+
     @Update
     void updateMovie(Movie movie);
 
+    @Update
+    void updateMovies(Movie... movies);
+
     @Delete
     void deleteMovie(Movie movie);
+
+    @Delete
+    void deleteMovies(Movie... movies);
 
 }
