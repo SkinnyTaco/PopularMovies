@@ -30,20 +30,4 @@ public abstract class MovieDatabase extends RoomDatabase {
 
     public abstract MovieDao movieDao();
 
-    @NonNull
-    @Override
-    protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration config) {
-        return null;
-    }
-
-    @NonNull
-    @Override
-    protected InvalidationTracker createInvalidationTracker() {
-        return null;
-    }
-
-    @Override
-    public void clearAllTables() {
-
-    }
 }
