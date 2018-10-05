@@ -9,8 +9,9 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.data.MovieDatabase;
 
-@Entity
+@Entity(tableName = "movie")
 public class Movie implements Parcelable {
 
     @SerializedName("id")
@@ -48,9 +49,9 @@ public class Movie implements Parcelable {
     @Expose
     private String banner;
 
+    @Ignore
     public Movie(String title, String releaseDate, String poster, String voteAverage,
                  String synopsis, String banner) {
-        this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;
         this.poster = poster;
@@ -60,7 +61,6 @@ public class Movie implements Parcelable {
         this.banner = banner;
     }
 
-    @Ignore
     public Movie(Integer id, String title, String releaseDate, String poster, String voteAverage,
                  String synopsis, String banner) {
         this.id = id;

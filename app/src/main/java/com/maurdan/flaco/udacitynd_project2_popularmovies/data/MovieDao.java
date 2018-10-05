@@ -12,4 +12,7 @@ public interface MovieDao {
 
     @Query("SELECT * FROM movie")
     List<Movie> loadAll();
+
+    @Query("SELECT * FROM movie WHERE id = :id")
+    Movie loadMovie(int id);
 }
