@@ -3,6 +3,7 @@ package com.maurdan.flaco.udacitynd_project2_popularmovies.activities;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
@@ -10,8 +11,10 @@ import android.widget.Toast;
 
 import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.adapters.GridViewAdapter;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.data.MovieDatabase;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Result;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.util.AppExecutors;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.util.Constants;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.util.MovieDBClient;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.util.ServiceGenerator;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.grid_layout) GridView gridLayout;
 
+    private MovieDatabase mMovieDatabase;
     private List<Movie> data;
     private MovieDBClient client;
     private GridViewAdapter mGridViewAdapter;
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
         int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         gridLayout.setColumnWidth(screenWidth/2);
+
+        mMovieDatabase = MovieDatabase.getInstance(this);
 
         client = ServiceGenerator.createService(MovieDBClient.class);
         call = client.getPopularMovies(Constants.API_KEY);
@@ -80,8 +86,16 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Result> call, Response<Result> response) {
                 Result result = response.body();
                 data = result.getResults();
+                AppExecutors executors = AppExecutors.getInstance();
+                executors.getDiskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMovieDatabase.movieDao().addMovies(data);
+                    }
+                });
                 mGridViewAdapter = new GridViewAdapter(MainActivity.this, data);
                 gridLayout.setAdapter(mGridViewAdapter);
+                Log.i("TESTING", "DID I MAKE IT HERE?????");
             }
 
             @Override

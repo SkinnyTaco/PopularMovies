@@ -14,7 +14,7 @@ public class AppExecutors {
         this.networkIO = networkIO;
     }
 
-    private static AppExecutors getInstance() {
+    public static AppExecutors getInstance() {
         if (sInstance == null) {
             synchronized (new Object()) {
                 sInstance = new AppExecutors(Executors.newSingleThreadExecutor(),

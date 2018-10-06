@@ -15,8 +15,8 @@ import com.maurdan.flaco.udacitynd_project2_popularmovies.data.MovieDatabase;
 public class Movie implements Parcelable {
 
     @SerializedName("id")
+    @PrimaryKey
     @Expose
-    @PrimaryKey(autoGenerate = true)
     private Integer id;
 
     @SerializedName("title")
@@ -48,6 +48,9 @@ public class Movie implements Parcelable {
     @ColumnInfo(name = "backdrop_path")
     @Expose
     private String banner;
+
+    @ColumnInfo(name = "favorite")
+    private boolean favorite;
 
     @Ignore
     public Movie(String title, String releaseDate, String poster, String voteAverage,
@@ -153,6 +156,14 @@ public class Movie implements Parcelable {
 
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 
     @Override

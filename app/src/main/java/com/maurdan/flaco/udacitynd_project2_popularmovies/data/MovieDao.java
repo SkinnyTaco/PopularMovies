@@ -1,5 +1,6 @@
 package com.maurdan.flaco.udacitynd_project2_popularmovies.data;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -15,27 +16,27 @@ import java.util.List;
 public interface MovieDao {
 
     @Query("SELECT * FROM movie")
-    List<Movie> loadAll();
+    LiveData<List<Movie>> loadAll();
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    Movie loadMovie(int id);
+    LiveData<Movie> loadMovie(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long addMovie(Movie movie);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long addMovies(Movie... movies);
+    long[] addMovies(List<Movie> movies);
 
     @Update
     void updateMovie(Movie movie);
 
     @Update
-    void updateMovies(Movie... movies);
+    void updateMovies(List<Movie> movies);
 
     @Delete
     void deleteMovie(Movie movie);
 
     @Delete
-    void deleteMovies(Movie... movies);
+    void deleteMovies(List<Movie> movies);
 
 }
