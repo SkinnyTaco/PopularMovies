@@ -6,7 +6,7 @@ public class Constants {
 
     public static final String API_KEY = BuildConfig.ApiKey;
 
-    public static final String BOOK = "book";
+    public static final String MOVIE_OBJECT = "movie";
 
     public static final String BASE_API_URL = "https://api.themoviedb.org/3/";
     public static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/";
