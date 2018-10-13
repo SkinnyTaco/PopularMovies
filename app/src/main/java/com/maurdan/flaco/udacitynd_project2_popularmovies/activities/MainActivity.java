@@ -3,14 +3,15 @@ package com.maurdan.flaco.udacitynd_project2_popularmovies.activities;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridView;
 import android.widget.Toast;
 
 import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
-import com.maurdan.flaco.udacitynd_project2_popularmovies.adapters.GridViewAdapter;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.adapters.GridLayoutAdapter;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.data.MovieDatabase;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Result;
@@ -29,13 +30,15 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.grid_layout) GridView gridLayout;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
 
     private MovieDatabase mMovieDatabase;
     private List<Movie> data;
     private MovieDBClient client;
-    private GridViewAdapter mGridViewAdapter;
+    private GridLayoutAdapter mGridLayoutAdapter;
     private Call<Result> call;
+    private int numOfColumns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +47,15 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-        gridLayout.setColumnWidth(screenWidth/2);
+        float dpWidth = screenWidth / Resources.getSystem().getDisplayMetrics().density;
+        numOfColumns = (int) dpWidth / 180;
+        numOfColumns = (numOfColumns > 0) ? numOfColumns : 1;
 
         mMovieDatabase = MovieDatabase.getInstance(this);
 
         client = ServiceGenerator.createService(MovieDBClient.class);
         call = client.getPopularMovies(Constants.API_KEY);
         makeCall(call);
-
     }
 
     @Override
@@ -91,10 +95,18 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         mMovieDatabase.movieDao().addMovies(data);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mGridLayoutAdapter = new GridLayoutAdapter(MainActivity.this, data);
+                                recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, numOfColumns));
+                                recyclerView.setAdapter(mGridLayoutAdapter);
+
+                            }
+                        });
                     }
                 });
-                mGridViewAdapter = new GridViewAdapter(MainActivity.this, data);
-                gridLayout.setAdapter(mGridViewAdapter);
+
                 Log.i("TESTING", "DID I MAKE IT HERE?????");
             }
 

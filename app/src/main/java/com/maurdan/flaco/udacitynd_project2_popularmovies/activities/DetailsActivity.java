@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.data.MovieDatabase;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
-import com.maurdan.flaco.udacitynd_project2_popularmovies.util.AppExecutors;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.util.Constants;
 import com.squareup.picasso.Picasso;
 
@@ -48,7 +47,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         setTitle(R.string.name_movie_details);
 
-        final Movie movie = getIntent().getParcelableExtra(Constants.BOOK);
+        final Movie movie = getIntent().getParcelableExtra(Constants.MOVIE_OBJECT);
         MovieDatabase movieDb = MovieDatabase.getInstance(DetailsActivity.this);
         final LiveData<Movie> databaseMovie = movieDb.movieDao().loadMovie(movie.getId());
         databaseMovie.observe(this, new Observer<Movie>() {
