@@ -33,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
+    public static final String MENU_OPTION = "option";
+
+    private int optionSelected = -1;
+
     private MovieDatabase mMovieDatabase;
     private List<Movie> data;
     private MovieDBClient client;
@@ -44,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (savedInstanceState != null) {
+            optionSelected = savedInstanceState.getInt(MENU_OPTION);
+        }
+
         ButterKnife.bind(this);
 
         int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -59,8 +68,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(MENU_OPTION, optionSelected);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings_menu, menu);
+        if (optionSelected != -1) {
+            onOptionsItemSelected(menu.getItem(optionSelected));
+        }
         return true;
     }
 
@@ -68,14 +86,16 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.menu_most_popular:
-                setTitle(R.string.app_name);
-                call = client.getPopularMovies(Constants.API_KEY);
-                makeCall(call);
-                return true;
             case R.id.menu_top_rated:
                 setTitle(R.string.name_top_rated);
+                optionSelected = 0;
                 call = client.getTopRatedMovies(Constants.API_KEY);
+                makeCall(call);
+                return true;
+            case R.id.menu_most_popular:
+                setTitle(R.string.app_name);
+                optionSelected = 1;
+                call = client.getPopularMovies(Constants.API_KEY);
                 makeCall(call);
                 return true;
             default:
