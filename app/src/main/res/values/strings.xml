@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Popular movies</string>
     <string name="name_top_rated">Top rated movies</string>
+    <string name="name_favorites">Favorite Movies</string>
     <string name="name_movie_details">Movie details</string>
 
     <string name="request_failed">Request failed</string>

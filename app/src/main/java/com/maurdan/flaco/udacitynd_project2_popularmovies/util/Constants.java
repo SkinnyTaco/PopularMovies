@@ -13,4 +13,6 @@ public class Constants {
 
     public static final String DEFAULT_POSTER_WIDTH = "w185/";
     public static final String BANNER_WIDTH = "w400/";
+
+    public static final String BUNDLE_RECYCLER_VIEW = "recycler_view";
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private List<Movie> data;
     private MovieDBClient client;
     private GridLayoutAdapter mGridLayoutAdapter;
+    private GridLayoutManager mGridLayoutManager;
     private Call<Result> call;
     private int numOfColumns;
 
@@ -54,12 +56,18 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
+        numOfColumns = Equations.getNumberOfColums();
+
+        mGridLayoutManager = new GridLayoutManager(MainActivity.this,
+                numOfColumns);
+
         if (savedInstanceState != null) {
+            Parcelable recyclerViewState = savedInstanceState.getParcelable(Constants.BUNDLE_RECYCLER_VIEW);
+            mGridLayoutManager.onRestoreInstanceState(recyclerViewState);
         }
 
         ButterKnife.bind(this);
-
-        numOfColumns = Equations.getNumberOfColums();
 
         mMovieDatabase = MovieDatabase.getInstance(this);
 
@@ -70,10 +78,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(PREFERENCE, sharedPreferences
-                .getString(getString(R.string.pref_sort_order_key),
-                        getString(R.string.pref_sort_order_value_popularity)));
         super.onSaveInstanceState(outState);
+        outState.putParcelable(Constants.BUNDLE_RECYCLER_VIEW,
+                recyclerView.getLayoutManager().onSaveInstanceState());
     }
 
     @Override
@@ -122,12 +129,15 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         String preference = sharedPreferences.getString(getString(R.string.pref_sort_order_key),
                 getString(R.string.pref_sort_order_value_popularity));
         if (preference.equals(getString(R.string.pref_sort_order_value_popularity))) {
+            setTitle(R.string.app_name);
             call = client.getPopularMovies(Constants.API_KEY);
         }
         if (preference.equals(getString(R.string.pref_sort_order_value_rating))) {
+            setTitle(R.string.name_top_rated);
             call = client.getTopRatedMovies(Constants.API_KEY);
         }
         if (preference.equals(getString(R.string.pref_sort_order_value_favorites))) {
+            setTitle(R.string.name_favorites);
             call = null;
         }
     }
@@ -148,8 +158,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                                 @Override
                                 public void run() {
                                     mGridLayoutAdapter = new GridLayoutAdapter(MainActivity.this, data);
-                                    recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,
-                                            numOfColumns));
+                                    recyclerView.setLayoutManager(mGridLayoutManager);
                                     recyclerView.setAdapter(mGridLayoutAdapter);
 
                                 }
