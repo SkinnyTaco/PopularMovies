@@ -16,6 +16,7 @@ import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.activities.DetailsActivity;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.util.Constants;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.util.Equations;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -47,10 +48,8 @@ public class GridLayoutAdapter extends RecyclerView.Adapter<GridLayoutAdapter.Gr
     @Override
     public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
         final Movie movie = mMovieList.get(position);
-        int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-        float dpWidth = screenWidth / Resources.getSystem().getDisplayMetrics().density;
-        int numOfColumns = (int) dpWidth / 180;
-        numOfColumns = (numOfColumns > 0) ? numOfColumns : 1;
+        int numOfColumns = Equations.getNumberOfColums();
+        float dpWidth = Equations.getDpWidth();
         int desiredImageWidth = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpWidth, mContext.getResources().getDisplayMetrics()) * 1.0 / numOfColumns);
         int dpHeight = (int) (dpWidth / numOfColumns * 1.5);
         int desiredImageHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpHeight, mContext.getResources().getDisplayMetrics());

@@ -8,9 +8,21 @@
     <string name="poster_content_description">Movie poster</string>
     <string name="average_rating">Average rating: %1$s/10</string>
 
-    <string name="menu_top_rated">Top rated</string>
-    <string name="menu_most_popular">Most popular</string>
+    <!-- Menu -->
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_settings">Settings</string>
+
+    <!-- Shared Preferences -->
+
+    <string name="pref_sort_order_label">Sort order</string>
+    <string name="pref_sort_order_key" translatable="false">sort_order</string>
+
+    <string name="pref_sort_order_label_popularity">Popularity</string>
+    <string name="pref_sort_order_label_rating">Rating</string>
+    <string name="pref_sort_order_label_favorites">Favorites</string>
+
+    <string name="pref_sort_order_value_popularity" translatable="false">popularity</string>
+    <string name="pref_sort_order_value_rating" translatable="false">rating</string>
+    <string name="pref_sort_order_value_favorites" translatable="false">favorites</string>
+
 </resources>
