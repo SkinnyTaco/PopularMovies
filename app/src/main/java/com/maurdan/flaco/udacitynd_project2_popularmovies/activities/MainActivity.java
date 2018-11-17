@@ -38,8 +38,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
-    public static final String PREFERENCE = "preference";
-
     private SharedPreferences sharedPreferences;
     private MovieDatabase mMovieDatabase;
     private List<Movie> data;
@@ -47,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private GridLayoutAdapter mGridLayoutAdapter;
     private GridLayoutManager mGridLayoutManager;
     private Call<Result> call;
-    private int numOfColumns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
-        numOfColumns = Equations.getNumberOfColums();
+        int numOfColumns = Equations.getNumberOfColums();
 
         mGridLayoutManager = new GridLayoutManager(MainActivity.this,
                 numOfColumns);

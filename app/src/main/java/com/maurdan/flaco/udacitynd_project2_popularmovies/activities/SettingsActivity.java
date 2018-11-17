@@ -16,6 +16,8 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         ActionBar actionBar = this.getSupportActionBar();
 
+        setTitle(R.string.name_settings_menu);
+
         // Set the action bar back button to look like an up button
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
