@@ -2,6 +2,7 @@ package com.maurdan.flaco.udacitynd_project2_popularmovies.activities;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -69,13 +70,23 @@ public class DetailsActivity extends AppCompatActivity {
         Log.i("SCREEN WIDTH", String.valueOf(screenWidth));
         int desiredHeightBanner = (int) Math.round(screenWidth * 0.563);
 
-        Picasso.get()
-                .load(bannerUrl)
-                .placeholder(R.drawable.ic_launcher_background)
-                .resize(screenWidth, desiredHeightBanner)
-                .centerInside()
-                .into(ivBanner);
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Picasso.get()
+                    .load(bannerUrl)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .fit()
+                    .centerCrop()
+                    .into(ivBanner);
+        } else {
 
+            Picasso.get()
+                    .load(bannerUrl)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .resize(screenWidth, 0)
+                    .centerInside()
+                    .into(ivBanner);
+        }
         tvTitle.setText(movie.getTitle());
 
         tvReleaseDate.setText(movie.getReleaseDate());
