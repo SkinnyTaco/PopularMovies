@@ -11,9 +11,10 @@ import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Favorite;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
 
-@Database(entities = {Movie.class}, version = 1, exportSchema = false)
+@Database(entities = {Movie.class, Favorite.class}, version = 1, exportSchema = false)
 public abstract class MovieDatabase extends RoomDatabase {
 
     public static final String MOVIE_DATABASE_NAME = "movies";

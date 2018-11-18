@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.adapters.GridLayoutAdapter;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.data.MovieDatabase;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Favorite;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Result;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.util.AppExecutors;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private SharedPreferences sharedPreferences;
     private MovieDatabase mMovieDatabase;
     private List<Movie> data;
+    private List<Favorite> favorites;
     private MovieDBClient client;
     private GridLayoutAdapter mGridLayoutAdapter;
     private GridLayoutManager mGridLayoutManager;
@@ -162,14 +164,34 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                             });
                         }
                     });
-
-                    Log.i("TESTING", "DID I MAKE IT HERE?????");
                 }
 
                 @Override
                 public void onFailure(Call<Result> call, Throwable t) {
                     Toast.makeText(MainActivity.this, R.string.request_failed, Toast.LENGTH_SHORT)
                             .show();
+                }
+            });
+        } else {
+            AppExecutors executors = AppExecutors.getInstance();
+            executors.getDiskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    favorites = mMovieDatabase.movieDao().loadFavorites();
+                    data.clear();
+                    for (Favorite favorite: favorites) {
+                        Movie movie = favorite.getMovie();
+                        data.add(movie);
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mGridLayoutAdapter = new GridLayoutAdapter(MainActivity.this, data);
+                            recyclerView.setLayoutManager(mGridLayoutManager);
+                            recyclerView.setAdapter(mGridLayoutAdapter);
+
+                        }
+                    });
                 }
             });
         }

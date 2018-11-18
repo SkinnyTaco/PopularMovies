@@ -1,0 +1,42 @@
+package com.maurdan.flaco.udacitynd_project2_popularmovies.model;
+
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
+@Entity(tableName = "favorite")
+public class Favorite {
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    @Embedded(prefix = "movie_")
+    private Movie movie;
+
+    public Favorite(int id, Movie movie) {
+        this.id = id;
+        this.movie = movie;
+    }
+
+    @Ignore
+    public Favorite(Movie movie) {
+        this.movie = movie;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+}

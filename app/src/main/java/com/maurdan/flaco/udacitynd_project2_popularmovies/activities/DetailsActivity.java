@@ -49,16 +49,17 @@ public class DetailsActivity extends AppCompatActivity {
         setTitle(R.string.name_movie_details);
 
         final Movie movie = getIntent().getParcelableExtra(Constants.MOVIE_OBJECT);
+        populateUi(movie);
         MovieDatabase movieDb = MovieDatabase.getInstance(DetailsActivity.this);
-        final LiveData<Movie> databaseMovie = movieDb.movieDao().loadMovie(movie.getId());
-        databaseMovie.observe(this, new Observer<Movie>() {
-            @Override
-            public void onChanged(@Nullable Movie movie) {
-                databaseMovie.removeObserver(this);
-                populateUi(movie);
-
-            }
-        });
+//        final LiveData<Movie> databaseMovie = movieDb.movieDao().loadMovie(movie.getId());
+//        databaseMovie.observe(this, new Observer<Movie>() {
+//            @Override
+//            public void onChanged(@Nullable Movie movie) {
+//                databaseMovie.removeObserver(this);
+//                populateUi(movie);
+//
+//            }
+//        });
 
 
     }

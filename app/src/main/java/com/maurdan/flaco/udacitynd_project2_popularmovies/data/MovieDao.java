@@ -8,6 +8,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Favorite;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
 
 import java.util.List;
@@ -21,22 +22,19 @@ public interface MovieDao {
     @Query("SELECT * FROM movie WHERE id = :id")
     LiveData<Movie> loadMovie(int id);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long addMovie(Movie movie);
+    @Query("SELECT * FROM favorite")
+    List<Favorite> loadFavorites();
+
+    @Query("SELECT * FROM favorite WHERE movie_id = :id")
+    Favorite loadFavoriteById(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long[] addMovies(List<Movie> movies);
+    void addMovie(Movie movie);
 
-    @Update
-    void updateMovie(Movie movie);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void addMovies(List<Movie> movies);
 
-    @Update
-    void updateMovies(List<Movie> movies);
-
-    @Delete
-    void deleteMovie(Movie movie);
-
-    @Delete
-    void deleteMovies(List<Movie> movies);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void addFavorite(Favorite favorite);
 
 }
