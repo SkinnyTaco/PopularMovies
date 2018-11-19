@@ -10,6 +10,10 @@
     <string name="poster_content_description">Movie poster</string>
     <string name="average_rating">Average rating: %1$s/10</string>
 
+    <!-- Details Activity -->
+
+    <string name="fab_fav">FAV</string>
+
     <!-- Menu -->
 
     <string name="menu_settings">Settings</string>

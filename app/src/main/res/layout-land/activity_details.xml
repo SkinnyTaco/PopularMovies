@@ -22,8 +22,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="40dp"
             android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:background="#E2DDDDDD"
             android:scrollbars="none"
             app:layout_constraintTop_toBottomOf="@+id/iv_movie_banner">
@@ -59,9 +59,9 @@
                         android:id="@+id/tv_release_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="4dp"
-                        android:paddingEnd="8dp"
                         android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="4dp"
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_title"
@@ -81,8 +81,8 @@
                     android:id="@+id/tv_vote_average"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toStartOf="@id/tv_plot_synopsis"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_mini_poster" />
@@ -104,15 +104,29 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:srcCompat="?attr/colorAccent" />
+        android:layout_margin="16dp">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="?attr/colorAccent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="16dp"
+            android:text="@string/fab_fav"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
 

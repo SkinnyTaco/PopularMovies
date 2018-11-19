@@ -98,14 +98,29 @@
 
     </ScrollView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        app:srcCompat="?attr/colorAccent"
         android:layout_margin="16dp"
-        android:layout_gravity="bottom|end"/>
+        android:layout_gravity="bottom|end">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="?attr/colorAccent"
+            android:clickable="true"
+            android:focusable="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/fab_fav"
+            android:elevation="16dp"
+            android:textColor="@android:color/white"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
