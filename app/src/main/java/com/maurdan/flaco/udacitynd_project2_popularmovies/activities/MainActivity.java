@@ -1,11 +1,14 @@
 package com.maurdan.flaco.udacitynd_project2_popularmovies.activities;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +29,7 @@ import com.maurdan.flaco.udacitynd_project2_popularmovies.util.Equations;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.util.MovieDBClient;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.util.ServiceGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,11 +46,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private SharedPreferences sharedPreferences;
     private MovieDatabase mMovieDatabase;
     private List<Movie> data;
-    private List<Favorite> favorites;
+    private LiveData<List<Favorite>> favorites;
     private MovieDBClient client;
     private GridLayoutAdapter mGridLayoutAdapter;
     private GridLayoutManager mGridLayoutManager;
-    private Call<Result> call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         mMovieDatabase = MovieDatabase.getInstance(this);
 
         client = ServiceGenerator.createService(MovieDBClient.class);
-        getCall();
+        Call<Result> call = getCall();
         makeCall(call);
     }
 
@@ -124,24 +127,26 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //
 //    }
 
-    private void getCall() {
+    private Call<Result> getCall() {
         String preference = sharedPreferences.getString(getString(R.string.pref_sort_order_key),
                 getString(R.string.pref_sort_order_value_popularity));
         if (preference.equals(getString(R.string.pref_sort_order_value_popularity))) {
             setTitle(R.string.app_name);
-            call = client.getPopularMovies(Constants.API_KEY);
+            return client.getPopularMovies(Constants.API_KEY);
         }
         if (preference.equals(getString(R.string.pref_sort_order_value_rating))) {
             setTitle(R.string.name_top_rated);
-            call = client.getTopRatedMovies(Constants.API_KEY);
+            return client.getTopRatedMovies(Constants.API_KEY);
         }
         if (preference.equals(getString(R.string.pref_sort_order_value_favorites))) {
             setTitle(R.string.name_favorites);
-            call = null;
+            return null;
         }
+        return null;
     }
 
     private void makeCall(Call<Result> call) {
+        data = new ArrayList<>();
         if (call != null) {
             call.enqueue(new Callback<Result>() {
                 @Override
@@ -173,25 +178,21 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 }
             });
         } else {
-            AppExecutors executors = AppExecutors.getInstance();
-            executors.getDiskIO().execute(new Runnable() {
+            favorites = mMovieDatabase.movieDao().loadFavorites();
+            favorites.observe(this, new Observer<List<Favorite>>() {
                 @Override
-                public void run() {
-                    favorites = mMovieDatabase.movieDao().loadFavorites();
-                    data.clear();
-                    for (Favorite favorite: favorites) {
+                public void onChanged(@Nullable List<Favorite> list) {
+                    favorites.removeObserver(this);
+                    if (data != null) {
+                        data.clear();
+                    }
+                    for (Favorite favorite : list) {
                         Movie movie = favorite.getMovie();
                         data.add(movie);
                     }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mGridLayoutAdapter = new GridLayoutAdapter(MainActivity.this, data);
-                            recyclerView.setLayoutManager(mGridLayoutManager);
-                            recyclerView.setAdapter(mGridLayoutAdapter);
-
-                        }
-                    });
+                    mGridLayoutAdapter = new GridLayoutAdapter(MainActivity.this, data);
+                    recyclerView.setLayoutManager(mGridLayoutManager);
+                    recyclerView.setAdapter(mGridLayoutAdapter);
                 }
             });
         }
@@ -205,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        getCall();
+        Call<Result> call = getCall();
         makeCall(call);
     }
 }

@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(tableName = "favorite")
 public class Favorite {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int id;
 
     @Embedded(prefix = "movie_")
@@ -22,6 +22,7 @@ public class Favorite {
     @Ignore
     public Favorite(Movie movie) {
         this.movie = movie;
+        this.id = movie.getId();
     }
 
     public int getId() {

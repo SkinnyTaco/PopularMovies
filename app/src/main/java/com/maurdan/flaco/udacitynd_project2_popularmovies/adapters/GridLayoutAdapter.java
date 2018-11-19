@@ -11,14 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.activities.DetailsActivity;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.activities.MainActivity;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.util.Constants;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.util.Equations;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,43 +50,53 @@ public class GridLayoutAdapter extends RecyclerView.Adapter<GridLayoutAdapter.Gr
 
     @Override
     public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
-        final Movie movie = mMovieList.get(position);
-        int numOfColumns = Equations.getNumberOfColums();
-        float dpWidth = Equations.getDpWidth();
-        int desiredImageWidth = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpWidth, mContext.getResources().getDisplayMetrics()) * 1.0 / numOfColumns);
-        int dpHeight = (int) (dpWidth / numOfColumns * 1.5);
-        int desiredImageHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpHeight, mContext.getResources().getDisplayMetrics());
-        holder.imageView.getLayoutParams().width = desiredImageWidth;
-        holder.imageView.getLayoutParams().height = desiredImageHeight;
-        Log.i("IMAGE HEIGHT", String.valueOf(dpHeight) + " " + String.valueOf(desiredImageHeight));
+        if (mMovieList == null || mMovieList.size() == 0) {
+            Toast.makeText(mContext, "No favorites, yet!", Toast.LENGTH_SHORT).show();
+        } else {
+            final Movie movie = mMovieList.get(position);
+            int numOfColumns = Equations.getNumberOfColums();
+            float dpWidth = Equations.getDpWidth();
+            int desiredImageWidth = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpWidth, mContext.getResources().getDisplayMetrics()) * 1.0 / numOfColumns);
+            int dpHeight = (int) (dpWidth / numOfColumns * 1.5);
+            int desiredImageHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpHeight, mContext.getResources().getDisplayMetrics());
+            holder.imageView.getLayoutParams().width = desiredImageWidth;
+            holder.imageView.getLayoutParams().height = desiredImageHeight;
+            Log.i("IMAGE HEIGHT", String.valueOf(dpHeight) + " " + String.valueOf(desiredImageHeight));
 
-        String poster = Constants.BASE_IMAGE_URL + Constants.DEFAULT_POSTER_WIDTH + movie.getPoster();
+            String poster = Constants.BASE_IMAGE_URL + Constants.DEFAULT_POSTER_WIDTH + movie.getPoster();
 
-        Picasso.get()
-                .load(poster)
-                .placeholder(R.drawable.ic_launcher_background)
-                .fit()
-                .centerInside()
-                .into(holder.imageView);
+            Picasso.get()
+                    .load(poster)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .fit()
+                    .centerInside()
+                    .into(holder.imageView);
 
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, DetailsActivity.class);
-                intent.putExtra(Constants.MOVIE_OBJECT, movie);
-                mContext.startActivity(intent);
-            }
-        });
+            holder.imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, DetailsActivity.class);
+                    intent.putExtra(Constants.MOVIE_OBJECT, movie);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mMovieList.size();
+        if (mMovieList == null) {
+            return 0;
+        } else {
+            return mMovieList.size();
+        }
     }
+
 
     public class GridViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.iv_movie_poster) ImageView imageView;
+        @BindView(R.id.iv_movie_poster)
+        ImageView imageView;
 
         public GridViewHolder(View itemView) {
             super(itemView);

@@ -1,104 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.DetailsActivity">
 
-    <ImageView
-        android:id="@+id/iv_movie_banner"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@string/poster_content_description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#E2DDDDDD"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:scrollbars="none"
-        app:layout_constraintTop_toBottomOf="@+id/iv_movie_banner"
-        >
-
-        <android.support.constraint.ConstraintLayout
+        <ImageView
+            android:id="@+id/iv_movie_banner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/poster_content_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:background="#E2DDDDDD"
+            android:scrollbars="none"
+            app:layout_constraintTop_toBottomOf="@+id/iv_movie_banner">
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/layout_movie_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#E2DDDDDD"
-                android:layout_marginTop="56dp">
+
+                >
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/layout_movie_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="56dp"
+                    android:background="#E2DDDDDD">
+
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Title of Movie Here" />
+
+                    <TextView
+                        android:id="@+id/tv_release_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:paddingEnd="8dp"
+                        android:paddingStart="8dp"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                        tools:text="XX-XX-XXXX" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/iv_mini_poster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/poster_content_description"
+                    app:layout_constraintStart_toStartOf="@id/layout_movie_info"
+                    app:layout_constraintTop_toBottomOf="@id/layout_movie_info" />
+
+                <TextView
+                    android:id="@+id/tv_vote_average"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintEnd_toStartOf="@id/tv_plot_synopsis"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_mini_poster" />
 
 
                 <TextView
-                    android:id="@+id/tv_title"
+                    android:id="@+id/tv_plot_synopsis"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Title of Movie Here" />
-
-                <TextView
-                    android:id="@+id/tv_release_date"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="4dp"
-                    android:paddingEnd="8dp"
-                    android:paddingStart="8dp"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_title"
-                    tools:text="XX-XX-XXXX" />
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_mini_poster"
+                    app:layout_constraintTop_toTopOf="@id/iv_mini_poster" />
 
             </android.support.constraint.ConstraintLayout>
+        </ScrollView>
 
-            <ImageView
-                android:id="@+id/iv_mini_poster"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/poster_content_description"
-                app:layout_constraintStart_toStartOf="@id/layout_movie_info"
-                app:layout_constraintTop_toBottomOf="@id/layout_movie_info" />
+    </android.support.constraint.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/tv_vote_average"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                app:layout_constraintEnd_toStartOf="@id/tv_plot_synopsis"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_mini_poster" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:srcCompat="?attr/colorAccent" />
 
-
-            <TextView
-                android:id="@+id/tv_plot_synopsis"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_mini_poster"
-                app:layout_constraintTop_toTopOf="@id/iv_mini_poster" />
-
-        </android.support.constraint.ConstraintLayout>
-    </ScrollView>
-
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>
 

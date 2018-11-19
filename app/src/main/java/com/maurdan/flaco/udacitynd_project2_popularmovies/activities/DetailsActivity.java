@@ -6,14 +6,18 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.data.MovieDatabase;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Favorite;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.util.AppExecutors;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.util.Constants;
 import com.squareup.picasso.Picasso;
 
@@ -40,6 +44,9 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.tv_plot_synopsis)
     TextView tvSynopsis;
 
+    @BindView(R.id.floatingActionButton)
+    FloatingActionButton floatingActionButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +57,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         final Movie movie = getIntent().getParcelableExtra(Constants.MOVIE_OBJECT);
         populateUi(movie);
-        MovieDatabase movieDb = MovieDatabase.getInstance(DetailsActivity.this);
+        final MovieDatabase movieDb = MovieDatabase.getInstance(DetailsActivity.this);
 //        final LiveData<Movie> databaseMovie = movieDb.movieDao().loadMovie(movie.getId());
 //        databaseMovie.observe(this, new Observer<Movie>() {
 //            @Override
@@ -60,7 +67,18 @@ public class DetailsActivity extends AppCompatActivity {
 //
 //            }
 //        });
-
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Favorite favorite = new Favorite(movie);
+                AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        movieDb.movieDao().addFavorite(favorite);
+                    }
+                });
+            }
+        });
 
     }
 
@@ -110,4 +128,5 @@ public class DetailsActivity extends AppCompatActivity {
 
         tvSynopsis.setText(movie.getSynopsis());
     }
+
 }
