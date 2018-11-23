@@ -47,6 +47,8 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.floatingActionButton)
     FloatingActionButton floatingActionButton;
 
+    MovieDatabase movieDb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +59,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         final Movie movie = getIntent().getParcelableExtra(Constants.MOVIE_OBJECT);
         populateUi(movie);
-        final MovieDatabase movieDb = MovieDatabase.getInstance(DetailsActivity.this);
+        movieDb = MovieDatabase.getInstance(DetailsActivity.this);
 //        final LiveData<Movie> databaseMovie = movieDb.movieDao().loadMovie(movie.getId());
 //        databaseMovie.observe(this, new Observer<Movie>() {
 //            @Override
@@ -67,22 +69,11 @@ public class DetailsActivity extends AppCompatActivity {
 //
 //            }
 //        });
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Favorite favorite = new Favorite(movie);
-                AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        movieDb.movieDao().addFavorite(favorite);
-                    }
-                });
-            }
-        });
+
 
     }
 
-    private void populateUi(Movie movie) {
+    private void populateUi(final Movie movie) {
         String bannerUrl = Constants.BASE_IMAGE_URL + Constants.BANNER_WIDTH + movie.getBanner();
 
         int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -127,6 +118,19 @@ public class DetailsActivity extends AppCompatActivity {
         );
 
         tvSynopsis.setText(movie.getSynopsis());
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Favorite favorite = new Favorite(movie);
+                AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        movieDb.movieDao().addFavorite(favorite);
+                    }
+                });
+            }
+        });
     }
 
 }
