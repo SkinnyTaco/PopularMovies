@@ -119,11 +119,11 @@
             app:srcCompat="?attr/colorAccent" />
 
         <TextView
+            android:id="@+id/tv_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:elevation="16dp"
-            android:text="@string/fab_fav"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white" />
     </FrameLayout>

@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Log.i("LAYOUT MANAGER", recyclerView.getLayoutManager().onSaveInstanceState().toString());
         outState.putParcelable(Constants.BUNDLE_RECYCLER_VIEW,
                 recyclerView.getLayoutManager().onSaveInstanceState());
     }

@@ -114,10 +114,10 @@
             />
 
         <TextView
+            android:id="@+id/tv_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/fab_fav"
             android:elevation="16dp"
             android:textColor="@android:color/white"
             android:textAppearance="?android:attr/textAppearanceMedium" />

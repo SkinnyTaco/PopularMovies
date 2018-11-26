@@ -44,10 +44,15 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.tv_plot_synopsis)
     TextView tvSynopsis;
 
+    @BindView(R.id.tv_fab)
+    TextView tvFab;
+
     @BindView(R.id.floatingActionButton)
     FloatingActionButton floatingActionButton;
 
     MovieDatabase movieDb;
+
+    Favorite favorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +63,8 @@ public class DetailsActivity extends AppCompatActivity {
         setTitle(R.string.name_movie_details);
 
         final Movie movie = getIntent().getParcelableExtra(Constants.MOVIE_OBJECT);
-        populateUi(movie);
         movieDb = MovieDatabase.getInstance(DetailsActivity.this);
+        populateUi(movie);
 //        final LiveData<Movie> databaseMovie = movieDb.movieDao().loadMovie(movie.getId());
 //        databaseMovie.observe(this, new Observer<Movie>() {
 //            @Override
@@ -119,14 +124,50 @@ public class DetailsActivity extends AppCompatActivity {
 
         tvSynopsis.setText(movie.getSynopsis());
 
+        AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                favorite = movieDb.movieDao().loadFavoriteById(movie.getId());
+                if (favorite == null || !favorite.isFavorite()) {
+                    tvFab.setText(R.string.fab_fav);
+                } else {
+                    tvFab.setText(R.string.fav_remove_fav);
+                }
+            }
+        });
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Favorite favorite = new Favorite(movie);
+
                 AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
                     @Override
                     public void run() {
-                        movieDb.movieDao().addFavorite(favorite);
+                        favorite = movieDb.movieDao().loadFavoriteById(movie.getId());
+                        if (favorite == null) {
+                            Favorite newFavorite = new Favorite(movie);
+                            movieDb.movieDao().addFavorite(newFavorite);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    tvFab.setText(R.string.fav_remove_fav);
+                                }
+                            });
+                        } else {
+                            favorite.setFavorite(!favorite.isFavorite());
+                            movieDb.movieDao().addFavorite(favorite);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (favorite.isFavorite()) {
+                                        tvFab.setText(R.string.fav_remove_fav);
+                                    } else {
+                                        tvFab.setText(R.string.fab_fav);
+                                    }
+
+                                }
+                            });
+                        }
                     }
                 });
             }

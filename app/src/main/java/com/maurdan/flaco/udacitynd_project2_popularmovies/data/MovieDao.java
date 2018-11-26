@@ -22,7 +22,7 @@ public interface MovieDao {
     @Query("SELECT * FROM movie WHERE id = :id")
     LiveData<Movie> loadMovie(int id);
 
-    @Query("SELECT * FROM favorite")
+    @Query("SELECT * FROM favorite where is_favorite = 1")
     LiveData<List<Favorite>> loadFavorites();
 
     @Query("SELECT * FROM favorite WHERE movie_id = :id")

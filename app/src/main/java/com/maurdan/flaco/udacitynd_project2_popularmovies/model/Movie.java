@@ -49,9 +49,6 @@ public class Movie implements Parcelable {
     @Expose
     private String banner;
 
-    @ColumnInfo(name = "favorite")
-    private boolean favorite;
-
     @Ignore
     public Movie(String title, String releaseDate, String poster, String voteAverage,
                  String synopsis, String banner) {
@@ -156,14 +153,6 @@ public class Movie implements Parcelable {
 
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
-    }
-
-    public boolean isFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
     }
 
     @Override
