@@ -79,6 +79,15 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Call<Result> call = getCall();
+        if (call == null) {
+            makeCall(call);
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i("LAYOUT MANAGER", recyclerView.getLayoutManager().onSaveInstanceState().toString());
