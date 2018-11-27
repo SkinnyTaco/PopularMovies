@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private SharedPreferences sharedPreferences;
     private MovieDatabase mMovieDatabase;
     private List<Movie> data;
-    private LiveData<List<Favorite>> favorites;
+    private List<Favorite> favorites;
     private MovieDBClient client;
     private GridLayoutAdapter mGridLayoutAdapter;
     private GridLayoutManager mGridLayoutManager;
@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         mMovieDatabase = MovieDatabase.getInstance(this);
 
         client = ServiceGenerator.createService(MovieDBClient.class);
+        Log.i("ON CREATE", "Activity created");
         Call<Result> call = getCall();
         makeCall(call);
     }
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     protected void onResume() {
         super.onResume();
         Call<Result> call = getCall();
+        Log.i("ON RESUME", "Call = " + call);
         if (call == null) {
             makeCall(call);
         }
@@ -188,21 +190,25 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 }
             });
         } else {
-            favorites = mMovieDatabase.movieDao().loadFavorites();
-            favorites.observe(this, new Observer<List<Favorite>>() {
+            AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
                 @Override
-                public void onChanged(@Nullable List<Favorite> list) {
-                    favorites.removeObserver(this);
-                    if (data != null) {
-                        data.clear();
-                    }
-                    for (Favorite favorite : list) {
-                        Movie movie = favorite.getMovie();
-                        data.add(movie);
-                    }
-                    mGridLayoutAdapter = new GridLayoutAdapter(MainActivity.this, data);
-                    recyclerView.setLayoutManager(mGridLayoutManager);
-                    recyclerView.setAdapter(mGridLayoutAdapter);
+                public void run() {
+                    favorites = mMovieDatabase.movieDao().loadFavorites();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (data != null) {
+                                data.clear();
+                            }
+                            for (Favorite favorite : favorites) {
+                                Movie movie = favorite.getMovie();
+                                data.add(movie);
+                            }
+                            mGridLayoutAdapter = new GridLayoutAdapter(MainActivity.this, data);
+                            recyclerView.setLayoutManager(mGridLayoutManager);
+                            recyclerView.setAdapter(mGridLayoutAdapter);
+                        }
+                    });
                 }
             });
         }
