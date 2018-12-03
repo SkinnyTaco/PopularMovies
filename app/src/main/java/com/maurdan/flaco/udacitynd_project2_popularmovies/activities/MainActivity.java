@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         mGridLayoutManager = new GridLayoutManager(MainActivity.this,
                 numOfColumns);
+        Log.i("LAYOUTMANAGER", mGridLayoutManager.toString());
 
         if (savedInstanceState != null) {
             Parcelable recyclerViewState = savedInstanceState.getParcelable(Constants.BUNDLE_RECYCLER_VIEW);
@@ -81,18 +82,17 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     @Override
     protected void onResume() {
-        super.onResume();
         Call<Result> call = getCall();
         Log.i("ON RESUME", "Call = " + call);
         if (call == null) {
             makeCall(call);
         }
+        super.onResume();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i("LAYOUT MANAGER", recyclerView.getLayoutManager().onSaveInstanceState().toString());
         outState.putParcelable(Constants.BUNDLE_RECYCLER_VIEW,
                 recyclerView.getLayoutManager().onSaveInstanceState());
     }
@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     private void makeCall(Call<Result> call) {
+        Log.i("CALL", "Making call...");
         data = new ArrayList<>();
         if (call != null) {
             call.enqueue(new Callback<Result>() {

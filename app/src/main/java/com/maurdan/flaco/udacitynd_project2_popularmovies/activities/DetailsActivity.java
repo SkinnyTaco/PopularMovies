@@ -12,17 +12,28 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.maurdan.flaco.udacitynd_project2_popularmovies.R;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.data.MovieDatabase;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Favorite;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Movie;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.model.Review;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.model.ReviewResults;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.util.AppExecutors;
 import com.maurdan.flaco.udacitynd_project2_popularmovies.util.Constants;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.util.MovieDBClient;
+import com.maurdan.flaco.udacitynd_project2_popularmovies.util.ServiceGenerator;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -50,7 +61,14 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.floatingActionButton)
     FloatingActionButton floatingActionButton;
 
+    @BindView(R.id.review)
+    TextView tvReview;
+
     MovieDatabase movieDb;
+
+    MovieDBClient client;
+
+    List<ReviewResults> reviewResults;
 
     Favorite favorite;
 
@@ -63,6 +81,9 @@ public class DetailsActivity extends AppCompatActivity {
         setTitle(R.string.name_movie_details);
 
         final Movie movie = getIntent().getParcelableExtra(Constants.MOVIE_OBJECT);
+
+        client = ServiceGenerator.createService(MovieDBClient.class);
+
         movieDb = MovieDatabase.getInstance(DetailsActivity.this);
         populateUi(movie);
 //        final LiveData<Movie> databaseMovie = movieDb.movieDao().loadMovie(movie.getId());
@@ -78,12 +99,38 @@ public class DetailsActivity extends AppCompatActivity {
 
     }
 
+    private void getReview(Movie movie) {
+        Call<Review> call = client.getReviews(Integer.toString(movie.getId()), Constants.API_KEY);
+        call.enqueue(new Callback<Review>() {
+            @Override
+            public void onResponse(Call<Review> call, Response<Review> response) {
+                Review review = response.body();
+                reviewResults = review.getReviews();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!reviewResults.isEmpty()) {
+
+                            tvReview.setText((CharSequence) reviewResults.get(0).getContent());
+                        } else {
+                            tvReview.setText("No reviews yet.");
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<Review> call, Throwable t) {
+                Toast.makeText(DetailsActivity.this, "Error getting reviews", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void populateUi(final Movie movie) {
         String bannerUrl = Constants.BASE_IMAGE_URL + Constants.BANNER_WIDTH + movie.getBanner();
 
         int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-        Log.i("SCREEN WIDTH", String.valueOf(screenWidth));
-        int desiredHeightBanner = (int) Math.round(screenWidth * 0.563);
 
         int orientation = this.getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -123,6 +170,8 @@ public class DetailsActivity extends AppCompatActivity {
         );
 
         tvSynopsis.setText(movie.getSynopsis());
+
+        getReview(movie);
 
         AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
             @Override
