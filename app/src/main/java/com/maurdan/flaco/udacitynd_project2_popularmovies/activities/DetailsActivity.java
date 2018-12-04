@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -61,8 +62,11 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.floatingActionButton)
     FloatingActionButton floatingActionButton;
 
-    @BindView(R.id.review)
+    @BindView(R.id.tv_review)
     TextView tvReview;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     MovieDatabase movieDb;
 
@@ -77,6 +81,9 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setTitle(R.string.name_movie_details);
 
